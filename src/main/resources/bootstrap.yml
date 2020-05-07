@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: zuul-gateway   #服务名
+
+zuul:
+  # 信号量, 默认100
+  semaphore:
+    max-semaphores: 2000
+  host:
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000 #默认就是10000
+  sensitive-headers: Cookie,Set-Cookie,Authorization
+#  routes:
+#    hello-api:
+#      path: /hello/**
+#      serviceId: hello-service
+#  prefix: /api
+
+logging.level.org.springframework.security: DEBUG
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000  #Hystrix超时时间，单位毫秒
+ribbon:
+  eureka:
+    enabled: true
+  ConnectTimeout: 60000 #ribbon请求连接的超时时间- 限制3秒内必须请求到服务，并不限制服务处理的返回时间
+  ReadTimeout: 60000 #请求处理的超时时间 下级服务响应最大时间,超出时间消费方（路由也是消费方）返回timeout

@@ -1,0 +1,37 @@
+spring:
+  #当前环境
+  profiles:
+    active: dev
+
+  #配置中心，根据当前环境发现对应的配置zuul-gateway-{dev}.properties(.yml)
+#  cloud:
+#    config:
+#      discovery:
+#        enabled: true
+#        service-id: config-server  #配置中心注册的服务名
+#      label: dev    # svn方式 配置文件目录
+#      label: master    # git方式
+
+server:
+  port: 11060
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://e1.domain.com/eureka,http://e2.domain.com/eureka
+
+# zuul配置
+zuul:
+  prefix: /api
+  routes:
+    # 服务接口
+    service-api:
+      path: /service-path/**
+      serviceId: eureka-service-id
+      sensitive-headers:
+
+eureka-service-id.ribbon.NFLoadBalancerRuleClassName: com.service.zuul.rule.StickySessionRule
